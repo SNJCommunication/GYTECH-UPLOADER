@@ -14,6 +14,7 @@ namespace GYTECH_UPLOADER
         public static String FieldNo = "-1";
         public static String FieldName = "";
         public static int Interval = -1;
+        public static int Remaining = -1;
 
         public static String HttpWebRequest(String url)
         {
