@@ -95,7 +95,7 @@ namespace GYTECH_UPLOADER
 
                 IniFile iniFile = new IniFile();
                 iniFile.Load("Settings.ini");
-                iniFile["Setting"]["FileName"] = lbl_fieldname.Text;
+                iniFile["Setting"]["FileName"] = lbl_filepath.Text;
                 iniFile.Save("Settings.ini");
             }
 
@@ -136,19 +136,28 @@ namespace GYTECH_UPLOADER
             if(!File.Exists(filename))
             {
                 MessageBox.Show("지정한 위치에 파일이 없습니다. 파일 이름이 변경되었거나 옮겨지지 않았는지 확인해주세요.", "파일오류", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                this.Invoke(new MethodInvoker(delegate () {
+                    btn_start.Tag = "STOP";
+                    btn_start.Text = "시작(&S)";
+                    lbl_stat.Text = "정지";
+                    timer1.Stop();
+                }));
+                
                 return;
             }
 
             using (MySqlConnection connection = new MySqlConnection("Server=198.13.51.149;Port=3306;Database=GYTECH;Uid=snjadmin;Pwd=07042124505"))
             {
-                DateTime LastDateTime = DateTime.Now;
+                DateTime LastDateTime = new DateTime(0);
                 DataTable FieldTable = null;
 
                 // 1. Get Last Uploaded Data From Database;
                 try
                 {
                     connection.Open();
-                    string sql = "SELECT * FROM `SensorValue_" + GLOBAL.FieldNo + "` ORDER BY `WrittenDate` DESC LIMIT 0, 1";
+
+                    //string sql = "SELECT * FROM `SensorValue_" + GLOBAL.FieldNo + "` ORDER BY `WrittenDate` DESC LIMIT 0, 1";
+                    string sql = "SELECT * FROM `SensorValue_" + GLOBAL.FieldNo + "_` ORDER BY `WrittenDate` DESC LIMIT 0, 1";
 
                     MySqlCommand cmd = new MySqlCommand(sql, connection);
                     MySqlDataReader table = cmd.ExecuteReader();
@@ -165,6 +174,10 @@ namespace GYTECH_UPLOADER
                 {
                     Console.WriteLine(ex.Message);
                 }
+                finally
+                {
+                    connection.Close();
+                }
 
                 // 2. File Read
 
@@ -180,6 +193,9 @@ namespace GYTECH_UPLOADER
                 {
                     string[] parts = line.Split(',');
                     DateTime CurrentDateTime = DateTime.Now;
+
+                    //ColumnNames.Clear();
+                    DataSets.Clear();
 
 
                     parts[0] = parts[0].Replace("\"", "");
@@ -233,32 +249,67 @@ namespace GYTECH_UPLOADER
                         if (idx >= 0)
                         {
                             //sql_values += ColumnNames[idx];
-                            DataSets.Add(row.Field<String>("ColumnName"), (parts[idx] == "NAN" ? "0" : parts[idx]));
+                            DataSets.Add(row.Field<String>("ColumnName"), (parts[idx] == "\"NAN\"" ? "0" : parts[idx]));
                         }
                         
                     }
 
-                    sql_insert += ") VALUES(NULL, '0', ";
-
+                    sql_insert = "INSERT INTO `SensorValue_" + GLOBAL.FieldNo + "_` (`No`,`ddd`,";
+                    sql_values = ") VALUES(NULL, '0', ";
                     cnt = 0;
-                    foreach(string part in parts)
+                    foreach (KeyValuePair<string, string> item in DataSets)
                     {
-                        if (cnt == 1)
+                        if(cnt > 0)
                         {
-                            cnt++;
-                            continue;
+                            sql_insert += ",";
+                            sql_values += ",";
                         }
-                        
-                        if (cnt > 0) sql_insert += ",";
+                        sql_insert += "`" + item.Key + "`";
 
+                        sql_values += "'" + (item.Value == "\"NAN\"" ? "0" : item.Value) + "'";
 
-                        sql_insert += "'" + ((part == "NAN") ? "0" : part) + "'";
                         cnt++;
                     }
 
-                    sql_insert += ");";
-
+                    sql_insert = sql_insert + sql_values + ");";
+                    
                     Console.WriteLine(sql_insert);
+
+                    this.Invoke(new MethodInvoker(delegate ()
+                    {
+                        txt_stat.Text += DataSets["WrittenDate"] + "데이터 업로드...";
+                        txt_stat.SelectionStart = txt_stat.Text.Length;//맨 마지막 선택...
+                        txt_stat.ScrollToCaret();
+                    }));
+
+                    connection.Open();
+                    MySqlCommand cmd = new MySqlCommand(sql_insert, connection);
+                    if(cmd.ExecuteNonQuery() > 0)
+                    {
+                        this.Invoke(new MethodInvoker(delegate ()
+                        {
+                            txt_stat.Text += "완료\r\n";
+                            txt_stat.SelectionStart = txt_stat.Text.Length;//맨 마지막 선택...
+                            txt_stat.ScrollToCaret();
+                        }));
+                    }
+                    else
+                    {
+                        this.Invoke(new MethodInvoker(delegate ()
+                        {
+                            txt_stat.Text += "실패\r\n";
+                            txt_stat.SelectionStart = txt_stat.Text.Length;//맨 마지막 선택...
+                            txt_stat.ScrollToCaret();
+                        }));
+                    }
+
+                    connection.Close();
+
+                    this.Invoke(new MethodInvoker(delegate ()
+                    {
+                    }));
+                    
+
 
 
                 }
@@ -297,6 +348,8 @@ namespace GYTECH_UPLOADER
             
             this.Invoke(new MethodInvoker(delegate () {
                 txt_stat.Text += "데이터 업로드 시작\r\n";
+                txt_stat.SelectionStart = txt_stat.Text.Length;//맨 마지막 선택...
+                txt_stat.ScrollToCaret();
             }));
 
 
@@ -304,6 +357,8 @@ namespace GYTECH_UPLOADER
             
             this.Invoke(new MethodInvoker(delegate () {
                 txt_stat.Text += "데이터 업로드 종료\r\n";
+                txt_stat.SelectionStart = txt_stat.Text.Length;//맨 마지막 선택...
+                txt_stat.ScrollToCaret();
             }));
             
         }

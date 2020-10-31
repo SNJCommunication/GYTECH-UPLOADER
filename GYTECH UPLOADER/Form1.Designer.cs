@@ -31,6 +31,8 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.lbl_stat = new System.Windows.Forms.Label();
+            this.lbl_fieldname = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.button1 = new System.Windows.Forms.Button();
@@ -40,8 +42,6 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.txt_stat = new System.Windows.Forms.TextBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.lbl_fieldname = new System.Windows.Forms.Label();
-            this.lbl_stat = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.tableLayoutPanel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -54,7 +54,7 @@
             this.tableLayoutPanel1.ColumnCount = 3;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 70F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 60F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 61F));
             this.tableLayoutPanel1.Controls.Add(this.lbl_stat, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.lbl_fieldname, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.groupBox1, 0, 0);
@@ -74,6 +74,28 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(484, 261);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
+            // lbl_stat
+            // 
+            this.lbl_stat.AutoSize = true;
+            this.lbl_stat.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbl_stat.Location = new System.Drawing.Point(299, 60);
+            this.lbl_stat.Name = "lbl_stat";
+            this.lbl_stat.Size = new System.Drawing.Size(120, 30);
+            this.lbl_stat.TabIndex = 6;
+            this.lbl_stat.Text = "정지";
+            this.lbl_stat.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lbl_fieldname
+            // 
+            this.lbl_fieldname.AutoSize = true;
+            this.lbl_fieldname.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbl_fieldname.Location = new System.Drawing.Point(3, 60);
+            this.lbl_fieldname.Name = "lbl_fieldname";
+            this.lbl_fieldname.Size = new System.Drawing.Size(290, 30);
+            this.lbl_fieldname.TabIndex = 5;
+            this.lbl_fieldname.Text = "현장명 :";
+            this.lbl_fieldname.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // groupBox1
             // 
             this.tableLayoutPanel1.SetColumnSpan(this.groupBox1, 2);
@@ -81,7 +103,7 @@
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.Location = new System.Drawing.Point(3, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(417, 54);
+            this.groupBox1.Size = new System.Drawing.Size(416, 54);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "데이터파일";
@@ -100,13 +122,13 @@
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(411, 34);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(410, 34);
             this.tableLayoutPanel2.TabIndex = 0;
             // 
             // button1
             // 
             this.button1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.button1.Location = new System.Drawing.Point(244, 3);
+            this.button1.Location = new System.Drawing.Point(243, 3);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(94, 28);
             this.button1.TabIndex = 2;
@@ -120,7 +142,7 @@
             this.lbl_filepath.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbl_filepath.Location = new System.Drawing.Point(3, 0);
             this.lbl_filepath.Name = "lbl_filepath";
-            this.lbl_filepath.Size = new System.Drawing.Size(235, 34);
+            this.lbl_filepath.Size = new System.Drawing.Size(234, 34);
             this.lbl_filepath.TabIndex = 0;
             this.lbl_filepath.Text = "파일없음";
             this.lbl_filepath.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -128,7 +150,7 @@
             // btn_start
             // 
             this.btn_start.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btn_start.Location = new System.Drawing.Point(344, 3);
+            this.btn_start.Location = new System.Drawing.Point(343, 3);
             this.btn_start.Name = "btn_start";
             this.btn_start.Size = new System.Drawing.Size(64, 28);
             this.btn_start.TabIndex = 1;
@@ -141,10 +163,10 @@
             this.pic_setting.BackgroundImage = global::GYTECH_UPLOADER.Properties.Resources.settings;
             this.pic_setting.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.pic_setting.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pic_setting.Location = new System.Drawing.Point(433, 10);
+            this.pic_setting.Location = new System.Drawing.Point(432, 10);
             this.pic_setting.Margin = new System.Windows.Forms.Padding(10);
             this.pic_setting.Name = "pic_setting";
-            this.pic_setting.Size = new System.Drawing.Size(41, 40);
+            this.pic_setting.Size = new System.Drawing.Size(42, 40);
             this.pic_setting.TabIndex = 1;
             this.pic_setting.TabStop = false;
             this.pic_setting.Click += new System.EventHandler(this.pic_setting_Click);
@@ -165,34 +187,13 @@
             this.txt_stat.Location = new System.Drawing.Point(3, 93);
             this.txt_stat.Multiline = true;
             this.txt_stat.Name = "txt_stat";
+            this.txt_stat.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.txt_stat.Size = new System.Drawing.Size(478, 143);
             this.txt_stat.TabIndex = 3;
             // 
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
-            // 
-            // lbl_fieldname
-            // 
-            this.lbl_fieldname.AutoSize = true;
-            this.lbl_fieldname.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbl_fieldname.Location = new System.Drawing.Point(3, 60);
-            this.lbl_fieldname.Name = "lbl_fieldname";
-            this.lbl_fieldname.Size = new System.Drawing.Size(290, 30);
-            this.lbl_fieldname.TabIndex = 5;
-            this.lbl_fieldname.Text = "현장명 :";
-            this.lbl_fieldname.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lbl_stat
-            // 
-            this.lbl_stat.AutoSize = true;
-            this.lbl_stat.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbl_stat.Location = new System.Drawing.Point(299, 60);
-            this.lbl_stat.Name = "lbl_stat";
-            this.lbl_stat.Size = new System.Drawing.Size(121, 30);
-            this.lbl_stat.TabIndex = 6;
-            this.lbl_stat.Text = "정지";
-            this.lbl_stat.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // timer1
             // 
