@@ -157,7 +157,7 @@ namespace GYTECH_UPLOADER
                     connection.Open();
 
                     //string sql = "SELECT * FROM `SensorValue_" + GLOBAL.FieldNo + "` ORDER BY `WrittenDate` DESC LIMIT 0, 1";
-                    string sql = "SELECT * FROM `SensorValue_" + GLOBAL.FieldNo + "_` ORDER BY `WrittenDate` DESC LIMIT 0, 1";
+                    string sql = "SELECT * FROM `SensorValue_" + GLOBAL.FieldNo + "` ORDER BY `WrittenDate` DESC LIMIT 0, 1";
 
                     MySqlCommand cmd = new MySqlCommand(sql, connection);
                     MySqlDataReader table = cmd.ExecuteReader();
@@ -183,14 +183,24 @@ namespace GYTECH_UPLOADER
 
                 string line = "";
                 StreamReader sr = new StreamReader(filename);
+                List<string> lines = new List<string>();
+                
+                while ((line = sr.ReadLine()) != null)
+                {
+                    lines.Add(line);
+                }
+
+                sr.Close();
 
                 string sql_insert = "";
                 string sql_values = "";
                 List<string> ColumnNames = new List<string>();
                 Dictionary<String, String> DataSets = new Dictionary<string, string>();
 
-                while ((line = sr.ReadLine()) != null)
+                //while ((line = sr.ReadLine()) != null)
+                foreach(string a_line in lines)
                 {
+                    line = a_line;
                     string[] parts = line.Split(',');
                     DateTime CurrentDateTime = DateTime.Now;
 
@@ -254,7 +264,7 @@ namespace GYTECH_UPLOADER
                         
                     }
 
-                    sql_insert = "INSERT INTO `SensorValue_" + GLOBAL.FieldNo + "_` (`No`,`ddd`,";
+                    sql_insert = "INSERT INTO `SensorValue_" + GLOBAL.FieldNo + "` (`No`,`ddd`,";
                     sql_values = ") VALUES(NULL, '0', ";
                     cnt = 0;
                     foreach (KeyValuePair<string, string> item in DataSets)
